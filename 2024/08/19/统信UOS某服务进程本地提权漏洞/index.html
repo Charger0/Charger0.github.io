@@ -20,15 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Charger0">
-<meta property="og:url" content="http://example.com/archives/2024/11/index.html">
+  <meta name="description" content="详情deepin-devicemanager服务器的installDriver接口存在命令注入漏洞，管理员用户输入当前密码后可提升至root权限。 分析github 上diff installDriver接口  先看util类的变化。新定义了一个函数Utils::runCmdSafeWithArgs。看代码逻辑，这个函数通过将程序和参数作为单独的参数传递给 QProcess，有效地避免了命令注入风">
+<meta property="og:type" content="article">
+<meta property="og:title" content="统信UOS某服务进程本地提权漏洞">
+<meta property="og:url" content="http://example.com/2024/08/19/%E7%BB%9F%E4%BF%A1UOS%E6%9F%90%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E/index.html">
 <meta property="og:site_name" content="Charger0">
+<meta property="og:description" content="详情deepin-devicemanager服务器的installDriver接口存在命令注入漏洞，管理员用户输入当前密码后可提升至root权限。 分析github 上diff installDriver接口  先看util类的变化。新定义了一个函数Utils::runCmdSafeWithArgs。看代码逻辑，这个函数通过将程序和参数作为单独的参数传递给 QProcess，有效地避免了命令注入风">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/image-20241111174543825.png">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/image-20241111174659510.png">
+<meta property="article:published_time" content="2024-08-19T19:38:24.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:52:20.281Z">
 <meta property="article:author" content="Charger0">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/imgs/$%7Bfiilename%7D/image-20241111174543825.png">
 
-<link rel="canonical" href="http://example.com/archives/2024/11/">
+<link rel="canonical" href="http://example.com/2024/08/19/%E7%BB%9F%E4%BF%A1UOS%E6%9F%90%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E/">
 
 
 <script id="page-configurations">
@@ -36,12 +43,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh'
   };
 </script>
 
-  <title>Archive | Charger0</title>
+  <title>统信UOS某服务进程本地提权漏洞 | Charger0</title>
   
 
 
@@ -140,110 +147,92 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 7 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/19/%E7%BB%9F%E4%BF%A1UOS%E6%9F%90%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          统信UOS某服务进程本地提权漏洞
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-20 03:38:24" itemprop="dateCreated datePublished" datetime="2024-08-20T03:38:24+08:00">2024-08-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:52:20" itemprop="dateModified" datetime="2024-11-13T17:52:20+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2024</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-11-11T15:26:58+08:00"
-              content="2024-11-11">
-          11-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/11/11/hello-world/" itemprop="url">
-            <span itemprop="name">Hello World</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-11-11T03:38:24+08:00"
-              content="2024-11-11">
-          11-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/" itemprop="url">
-            <span itemprop="name">鹏城杯 2024 java</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-11-11T03:38:24+08:00"
-              content="2024-11-11">
-          11-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/11/10/ByteCTF2024_ezauth/" itemprop="url">
-            <span itemprop="name">bytectf2024 ezauth</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-11-05T03:38:24+08:00"
-              content="2024-11-05">
-          11-05
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2024/11/04/%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024_ezcalc%E5%AD%A6service-worker/" itemprop="url">
-            <span itemprop="name">强网杯 ezcalc</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h3 id="详情"><a href="#详情" class="headerlink" title="详情"></a>详情</h3><p>deepin-devicemanager服务器的installDriver接口存在命令注入漏洞，管理员用户输入当前密码后可提升至root权限。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>github 上diff installDriver接口</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/image-20241111174543825.png" alt="image-20241111174543825"></p>
+<p>先看util类的变化。新定义了一个函数Utils::runCmdSafeWithArgs。看代码逻辑，这个函数通过将程序和参数作为单独的参数传递给 QProcess，有效地避免了命令注入风险。</p>
+<p>找到使用Utils::runCmdSafeWithArgs的方法，存在两处改进的代码。</p>
+<p>代码块一DriverManager::isSigned</p>
+<p>升级前代码strSignTool + filepath 这一行将 filepath（文件路径）直接拼接到命令行字符串options中；</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/image-20241111174659510.png" alt="image-20241111174659510"></p>
+<p>代码块 二同理。</p>
+<h3 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h3><p>改进后的代码中，命令和参数被清晰地分开处理。program 保存了要执行的命令，而 arguments 则是命令的参数列表。确保了 filepath&#x2F;strPkgName 只是作为一个参数传递，而不是命令的一部分，即使 filepath&#x2F;strPkgName 中包含恶意字符，也不会被解释为命令的一部分，从而有效防止了命令注入。</p>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/" rel="next" title="某4Kstar CMS审计">
+      某4Kstar CMS审计 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
@@ -296,6 +285,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%A6%E6%83%85"><span class="nav-number">1.</span> <span class="nav-text">详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D"><span class="nav-number">3.</span> <span class="nav-text">修复</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

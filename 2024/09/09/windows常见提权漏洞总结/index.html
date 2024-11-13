@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="KerberosMS14-068；CVE-2014-6324漏洞点PAC（Privilege Attribute Certificate），特权属性证书。根据用户声明的身份和server端的acl表确定后，在TGT中包含。 PAC包括  身份信息 授权信息 签名信息 PAC签名，默认根据krbtgt_hash签名，并将结果放在tgt中。但微软又允许客户端指定任意签名算法 服务特定签名（在某些场景下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="windows常见提权漏洞总结.md">
+<meta property="og:url" content="http://example.com/2024/09/09/windows%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Charger0">
+<meta property="og:description" content="KerberosMS14-068；CVE-2014-6324漏洞点PAC（Privilege Attribute Certificate），特权属性证书。根据用户声明的身份和server端的acl表确定后，在TGT中包含。 PAC包括  身份信息 授权信息 签名信息 PAC签名，默认根据krbtgt_hash签名，并将结果放在tgt中。但微软又允许客户端指定任意签名算法 服务特定签名（在某些场景下">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/imgs/$%7Bfiilename%7D/20201007171427-80258148-087d-1.jpg">
+<meta property="article:published_time" content="2024-09-09T19:38:24.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:52:44.805Z">
+<meta property="article:author" content="Charger0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/imgs/$%7Bfiilename%7D/20201007171427-80258148-087d-1.jpg">
+
+<link rel="canonical" href="http://example.com/2024/09/09/windows%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>windows常见提权漏洞总结.md | Charger0</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Charger0</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/09/windows%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          windows常见提权漏洞总结.md
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-09-10 03:38:24" itemprop="dateCreated datePublished" datetime="2024-09-10T03:38:24+08:00">2024-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:52:44" itemprop="dateModified" datetime="2024-11-13T17:52:44+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Kerberos"><a href="#Kerberos" class="headerlink" title="Kerberos"></a>Kerberos</h2><h4 id="MS14-068；CVE-2014-6324"><a href="#MS14-068；CVE-2014-6324" class="headerlink" title="MS14-068；CVE-2014-6324"></a>MS14-068；CVE-2014-6324</h4><h5 id="漏洞点"><a href="#漏洞点" class="headerlink" title="漏洞点"></a>漏洞点</h5><p>PAC（Privilege Attribute Certificate），特权属性证书。根据用户声明的身份和server端的acl表确定后，在TGT中包含。</p>
+<p>PAC包括</p>
+<ol>
+<li>身份信息</li>
+<li>授权信息</li>
+<li>签名信息<ol>
+<li>PAC签名，默认根据krbtgt_hash签名，并将结果放在tgt中。但微软又允许<strong>客户端指定任意签名算法</strong></li>
+<li><strong>服务特定签名（在某些场景下</strong>，忽略。</li>
+</ol>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://1y0ng.github.io/post/2023/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F%E4%B9%8Bms14-068%E5%92%8C%E9%BB%84%E9%87%91%E3%80%81%E7%99%BD%E9%93%B6%E7%A5%A8%E6%8D%AE/">内网渗透之ms14_068和黄金、白银票据 | 1y0ng’s Blog</a></p>
+<p>AS-REQ 设置<code>include-PAC</code>为<code>False</code>,则返回TGT中不会包含PAC。我们可以自己放个PAC，放到TGS-REQ中。<strong>PAC没有被放在TGT中,而是放在了TGS_REQ数据包的其它地方.但可笑的是,KDC在实现上竟然允许这样的构造,也就是说,KDC能够正确解析出没有放在其它地方的PAC信息.</strong></p>
+<p><strong>KDC验证缺少PAC的TGT成功后,再验证不在TGT中 的PAC的合法性.如果2个均验证成功,KDC把PAC中的User SID、Group SID取出来,重新使用进行签名,签名算法和密钥与设置inclue-pac标志位为TRUE时一模一样.将将新产生的PAC加入到解密后的TGT中,再重新加密制作全新的TGT发送给Client,不是TGS</strong></p>
+<p>这样得到了一个高权限的PAC</p>
+<p>和jwt 先validate expire  后verify一样。 </p>
+<p>AS-REQ   <code>include-PAC</code>为<code>False</code></p>
+<p>AS-RES   返回TGT</p>
+<p>TGS-REQ   发送TGT和不在TGT中PAC</p>
+<p> TGS-RES  PAC确定身份的TGT、</p>
+<h4 id="CVE-2021-42287-CVE-2021-42278"><a href="#CVE-2021-42287-CVE-2021-42278" class="headerlink" title="CVE-2021-42287&#x2F;CVE-2021-42278"></a>CVE-2021-42287&#x2F;CVE-2021-42278</h4><ul>
+<li>CVE-2021-42278，机器账户的名称一般用<code>$</code>结尾，但AD并未对域内机器账户名进行验证。</li>
+<li>CVE-2021-42287， 结合上述42278漏洞，创建一个与DC机器账户名称相同的机器账户(不以$结尾)，使用该账户请求一个TGT后，修改账户名，然后通过S4U2Self申请TGS Ticket，然后DC进行在<code>TGS_REP</code>阶段加密<code>TGS Ticket</code>时，无法找到该账户利用机器账户hash加密，DC便使用自己的hash加密<code>TGS Ticket</code>，提供一个属于该账户的<code>PAC</code>，我们便可得到一个高权限的ST。</li>
+</ul>
+<p>约束委派S4U2提权</p>
+<h2 id="Zerologon"><a href="#Zerologon" class="headerlink" title="Zerologon"></a>Zerologon</h2><p>号称3秒撸域控</p>
+<h4 id="CVE-2020-1472"><a href="#CVE-2020-1472" class="headerlink" title="CVE-2020-1472"></a>CVE-2020-1472</h4><p>AES-CFB8安全性取决于随机选择的IV。但在Netlogon RPC中，作为ComputeNetlogonCredential检查的一部分，IV被错误的设置为0。</p>
+<p>属于错误配置漏洞，加密算法这块先暂存一下。</p>
+<p>流量日志看</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/20201007171427-80258148-087d-1.jpg" alt="img"></p>
+<p>这个洞打完得恢复下密码。注册表中的密码是不改的。</p>
+<h2 id="ADCS"><a href="#ADCS" class="headerlink" title="ADCS"></a>ADCS</h2><p>ADCS 是一套域内的证书服务，安装了ADCS服务的域内允许通过CA签发的证书进行身份认证。</p>
+<h4 id="CVE-2022-26923"><a href="#CVE-2022-26923" class="headerlink" title="CVE-2022-26923"></a>CVE-2022-26923</h4><h5 id="漏洞点-1"><a href="#漏洞点-1" class="headerlink" title="漏洞点"></a>漏洞点</h5><p>默认情况下，域用户账号可以申请User证书，域计算机机器账号可以申请Machine证书，两个证书都允许客戶端身份验证。用户账号用UPN区分用户，机器账号用dNSHostName来区别机器，服务用SPN来唯一确定一个服务。</p>
+<p>微软策略允许不同机器有相同dns名称</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/win32/adschema/r-validated-dns-host-name">https://docs.microsoft.com/en-us/windows/win32/adschema/r-validated-dns-host-name</a></p>
+<p>但机器账号身份与SPN有联系。SPN具有唯一性</p>
+<p>机器账号存在dNSHostName属性。该属性和机器证书是绑定的，不同机器账号的dNSHostName内容，就会得到不同的证书。选一个可控的机器账号对象，将dNSHostName的值改成域控”dc.test.com”，同时解除该机器账号绑定的SPN，即可获取域控机器账户的权限。</p>
+<h5 id="利用条件"><a href="#利用条件" class="headerlink" title="利用条件"></a>利用条件</h5><p><strong>1、域控服务器系统版本</strong></p>
+<p>Win8.1、Win10、Win11、Win Server 2012 R2、Win Server 2016、Win Server 2019、Win Server 2022等版本，详细版本号可以参考微软官方的公告（参考链接）。</p>
+<p><strong>2、域内普通用户账号权限</strong></p>
+<p>且用户对自己创立的机器用户的dNSHostName与SPN具有写权限</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/" rel="prev" title="某4Kstar CMS审计">
+      <i class="fa fa-chevron-left"></i> 某4Kstar CMS审计
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/04/%E4%BB%8E%E5%BC%BA%E7%BD%91%E6%9D%AF2024_ezcalc%E5%AD%A6service-worker/" rel="next" title="强网杯 ezcalc">
+      强网杯 ezcalc <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Kerberos"><span class="nav-number">1.</span> <span class="nav-text">Kerberos</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MS14-068%EF%BC%9BCVE-2014-6324"><span class="nav-number">1.0.1.</span> <span class="nav-text">MS14-068；CVE-2014-6324</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%82%B9"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">漏洞点</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CVE-2021-42287-CVE-2021-42278"><span class="nav-number">1.0.2.</span> <span class="nav-text">CVE-2021-42287&#x2F;CVE-2021-42278</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Zerologon"><span class="nav-number">2.</span> <span class="nav-text">Zerologon</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CVE-2020-1472"><span class="nav-number">2.0.1.</span> <span class="nav-text">CVE-2020-1472</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADCS"><span class="nav-number">3.</span> <span class="nav-text">ADCS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CVE-2022-26923"><span class="nav-number">3.0.1.</span> <span class="nav-text">CVE-2022-26923</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E7%82%B9-1"><span class="nav-number">3.0.1.1.</span> <span class="nav-text">漏洞点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="nav-number">3.0.1.2.</span> <span class="nav-text">利用条件</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charger0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charger0</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

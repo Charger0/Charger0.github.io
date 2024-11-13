@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前置说明此漏洞基于CVE-2023-47444&#x2F;CNVD-2024-30067相同的前置条件  即管理员权限且默认存储位置未修改 OpenCart 中经过身份验证的静态代码注入 （CVE-2023-47444） |0xbro OpenCart授权问题漏洞（CNVD-2024-30067）(cnvd.org.cn) 此漏洞与上述漏洞影响版本不同，究其原因是通过代码审计发现 V3与V4中代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="某4Kstar CMS审计">
+<meta property="og:url" content="http://example.com/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Charger0">
+<meta property="og:description" content="前置说明此漏洞基于CVE-2023-47444&#x2F;CNVD-2024-30067相同的前置条件  即管理员权限且默认存储位置未修改 OpenCart 中经过身份验证的静态代码注入 （CVE-2023-47444） |0xbro OpenCart授权问题漏洞（CNVD-2024-30067）(cnvd.org.cn) 此漏洞与上述漏洞影响版本不同，究其原因是通过代码审计发现 V3与V4中代码">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/imgs/wps19.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps20.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps21.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps22.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps23.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps24.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps25.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps26.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps27.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps28.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps29.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps30.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps31.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps32.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps33.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps34.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps35.jpg">
+<meta property="og:image" content="http://example.com/imgs/wps36.jpg">
+<meta property="article:published_time" content="2024-09-09T19:38:24.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:51:46.012Z">
+<meta property="article:author" content="Charger0">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/imgs/wps19.jpg">
+
+<link rel="canonical" href="http://example.com/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh'
+  };
+</script>
+
+  <title>某4Kstar CMS审计 | Charger0</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Charger0</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          某4Kstar CMS审计
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-09-10 03:38:24" itemprop="dateCreated datePublished" datetime="2024-09-10T03:38:24+08:00">2024-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:51:46" itemprop="dateModified" datetime="2024-11-13T17:51:46+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前置说明"><a href="#前置说明" class="headerlink" title="前置说明"></a>前置说明</h1><p>此漏洞基于CVE-2023-47444&#x2F;CNVD-2024-30067相同的前置条件  即管理员权限且默认存储位置未修改</p>
+<p><a target="_blank" rel="noopener" href="https://0xbro.red/disclosures/disclosed-vulnerabilities/opencart-cve-2023-47444/">OpenCart 中经过身份验证的静态代码注入 （CVE-2023-47444） |0xbro</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnvd.org.cn/flaw/show/CNVD-2024-30067">OpenCart授权问题漏洞（CNVD-2024-30067）(cnvd.org.cn)</a></p>
+<p>此漏洞与上述漏洞影响版本不同，究其原因是通过代码审计发现 V3与V4中代码的具体实现不同，V4中</p>
+<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><p>创建数据库</p>
+<p><img src="/./../imgs/wps19.jpg" alt="img"> </p>
+<p>源码复制到WWW目录</p>
+<p><img src="/./../imgs/wps20.jpg" alt="img"> </p>
+<p>访问index.php 自动跳转到安装  </p>
+<p>环境检查通过</p>
+<p><img src="/./../imgs/wps21.jpg" alt="img"> </p>
+<p>配置数据库连接</p>
+<p><img src="/./../imgs/wps22.jpg" alt="img"> </p>
+<p>安装成功 删除install目录  </p>
+<p>环境搭建完成 开始白盒审计</p>
+<h1 id="审计过程"><a href="#审计过程" class="headerlink" title="审计过程"></a>审计过程</h1><p>优先审计后台功能点，根据设置的用户密码登录后台</p>
+<p>审计到&#x2F;admin&#x2F;common&#x2F;security&#x2F;move</p>
+<p><img src="/./../imgs/wps23.jpg" alt="img"> </p>
+<p>用户控制的变量被放置在其中，然后将其写入新文件，而没有适当的转义或验证。</p>
+<p>查到这里出现过漏洞 但影响版本均为4.0及其更高版本</p>
+<p>对比代码</p>
+<p><img src="/./../imgs/wps24.jpg" alt="img"> </p>
+<p>可以看出 $base_new 等效$path . $directory</p>
+<p>跟踪V4中 $base_new的声明</p>
+<p><img src="/./../imgs/wps25.jpg" alt="img"> </p>
+<p>可知 V4中  $path . $name 等效V3中 $path . $directory</p>
+<p>由V4中 关于  $path . $name  的校验</p>
+<p><img src="/./../imgs/wps26.jpg" alt="img"> </p>
+<p>与V3中 $path . $directory 对比</p>
+<p><img src="/./../imgs/wps27.jpg" alt="img"> </p>
+<p>得知V3对 $path参数 过滤不严 </p>
+<p>V4对 $name参数 过滤不严 </p>
+<p>既然V4的$name存在注入  我们设想V3同样存在注入</p>
+<p>实现注入所需字符同V4有 ‘ # ) ; </p>
+<p>输入与<a target="_blank" rel="noopener" href="https://0xbro.red/disclosures/disclosed-vulnerabilities/opencart-cve-2023-47444/">OpenCart 中经过身份验证的静态代码注入 （CVE-2023-47444） |0xbro</a> 相同的payload后，进入报错逻辑  </p>
+<p><img src="/./../imgs/wps28.jpg" alt="img"> </p>
+<p>须进一步修改代码 </p>
+<p>由str_replace(‘\‘, ‘&#x2F;‘, substr(<strong>DIR_SYSTEM</strong>, 0, strlen($path))</p>
+<p><strong>DIR_SYSTEM &#x3D; ‘D:&#x2F; phpstudy_pro&#x2F; WWW&#x2F; upload&#x2F; system&#x2F;‘: string</strong></p>
+<p>可知  $path需要输入的格式为绝对路径  这样substr截取后的才是我们要注入的字符串</p>
+<p>需要网站目录绝对路径 可以通过错误日志查看</p>
+<p><img src="/./../imgs/wps29.jpg" alt="img"> </p>
+<p>更换payload后 </p>
+<p><img src="/./../imgs/wps30.jpg" alt="img"> </p>
+<p>Realpath报错</p>
+<p>查明原因后得知  realpath需要的是真实存在的目录</p>
+<p>经过测试</p>
+<p>D:&#x2F;phpstudy_pro&#x2F;WWW&#x2F;upload&#x2F;system&#x2F;..&#x2F;pwned’);phpinfo();#-&#x2F;..&#x2F;system</p>
+<p>这样的相对路径能够使realpath正常运行 同时保留了注入字符</p>
+<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p><img src="/./../imgs/wps31.jpg" alt="img"> </p>
+<p><img src="/./../imgs/wps32.jpg" alt="img"> </p>
+<p>可以正常进入代码注入逻辑</p>
+<p>正常返回</p>
+<p><img src="/./../imgs/wps33.jpg" alt="img"> </p>
+<p>成功：storage 文件夹位置已更改！</p>
+<p>可以看到新产生目录</p>
+<p><img src="/./../imgs/wps34.jpg" alt="img"> </p>
+<p>而admin&#x2F;config.php注入了phpinfo();</p>
+<p><img src="/./../imgs/wps35.jpg" alt="img"> </p>
+<p>同样的 我们可以注入一句话木马 </p>
+<p><img src="/./../imgs/wps36.jpg" alt="img"> </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/19/%E7%BB%9F%E4%BF%A1UOS%E6%9F%90%E6%9C%8D%E5%8A%A1%E8%BF%9B%E7%A8%8B%E6%9C%AC%E5%9C%B0%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E/" rel="prev" title="统信UOS某服务进程本地提权漏洞">
+      <i class="fa fa-chevron-left"></i> 统信UOS某服务进程本地提权漏洞
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/09/09/windows%E5%B8%B8%E8%A7%81%E6%8F%90%E6%9D%83%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/" rel="next" title="windows常见提权漏洞总结.md">
+      windows常见提权漏洞总结.md <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">前置说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%A1%E8%AE%A1%E8%BF%87%E7%A8%8B"><span class="nav-number">3.</span> <span class="nav-text">审计过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">4.</span> <span class="nav-text">验证</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Charger0</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charger0</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -984,87 +984,6 @@ key_value = ET.SubElement(key_info, &#39;KeyValue&#39;)
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/09/Linux%E6%8F%90%E6%9D%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Charger0">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Charger0">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/09/09/Linux%E6%8F%90%E6%9D%83/" class="post-title-link" itemprop="url">linux提权</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-09-10 03:38:24" itemprop="dateCreated datePublished" datetime="2024-09-10T03:38:24+08:00">2024-09-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-13 18:00:10" itemprop="dateModified" datetime="2024-11-13T18:00:10+08:00">2024-11-13</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Linux提权"><a href="#Linux提权" class="headerlink" title="Linux提权"></a>Linux提权</h1><h3 id="挂载复用导致的提权"><a href="#挂载复用导致的提权" class="headerlink" title="挂载复用导致的提权"></a>挂载复用导致的提权</h3><h4 id="Lxd-Privilege-Escalation"><a href="#Lxd-Privilege-Escalation" class="headerlink" title="Lxd Privilege Escalation"></a>Lxd Privilege Escalation</h4><p><strong>Linux 容器 （LXC）</strong> 通常被视为一种轻量级虚拟化技术，它介于 chroot 和完全开发的虚拟机之间，它创建了一个尽可能接近 Linux 安装的环境，但不需要单独的内核。<br><strong>Linux 守护程序 （LXD）</strong> 是轻量级容器管理程序。LXD 构建在称为 LXC 的容器技术之上，该技术以前被 Docker 使用。它使用稳定的 LXC API 在后台完成所有容器管理，并在其上添加 REST API，并提供更简单、更一致的用户体验。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt install lxd</span><br><span class="line">apt install zfsutils-linux</span><br><span class="line">usermod --append --groups lxd raj</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>lxd组成员对lxc有控制权，可以create a container using lxc</p>
-<p>将这个容器挂载到&#x2F;root</p>
-<p>lxc exec ignite &#x2F;bin&#x2F;sh  使用容器里面的shell</p>
-<p>即可完成提权。</p>
-<h4 id="Docker提权"><a href="#Docker提权" class="headerlink" title="Docker提权"></a>Docker提权</h4><p>同样类似上面</p>
-<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/system/170783.html">普通用户借助Docker容器提权思路分享 - FreeBuf网络安全行业门户</a></p>
-<h3 id="Rsync"><a href="#Rsync" class="headerlink" title="Rsync"></a>Rsync</h3><p>linux下一款数据备份工具，默认开启873端口</p>
-<p>借助Linux默认计划任务调用&#x2F;etc&#x2F;cron.hourly，利用rsync连接覆盖</p>
-<p>前提：没有账号密码验证 开放873端口</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上传文件覆盖定时任务目录下rsync -av nc rsync://victim:873/src/etc/cron.hourly</span><br></pre></td></tr></table></figure>
-
-<h3 id="Polkit"><a href="#Polkit" class="headerlink" title="Polkit"></a>Polkit</h3><p>pkexec 提权。打exp就可以</p>
-<h3 id="Suid提权"><a href="#Suid提权" class="headerlink" title="Suid提权"></a>Suid提权</h3><p><a target="_blank" rel="noopener" href="https://gtfobins.github.io/">GTFOBins</a></p>
-<h3 id="Capabilities-提权"><a href="#Capabilities-提权" class="headerlink" title="Capabilities 提权"></a>Capabilities 提权</h3><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/system/358115.html">Linux提权之Capabilities提权（一） - FreeBuf网络安全行业门户</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/09/09/%E6%9F%904kstar%20cms%E5%AE%A1%E8%AE%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2107,7 +2026,7 @@ ysomap支持Java原生反序列化利用链、fastjson利用链、hessian利用�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

